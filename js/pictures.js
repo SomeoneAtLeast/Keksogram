@@ -1,8 +1,10 @@
 'use strict'
 
-let photoTemplate = document.querySelector('#picture-template')
+let picturesContainer = document.querySelector('.pictures');
+
+let photoTemplate = document.querySelector('#picture')
 .content
-.querySelector('.picture');
+.querySelector('.picture__link');
 
 let photoAddress = [];
 
@@ -17,13 +19,13 @@ console.log(photoAddress);
 
 let photo = [];
 
-for (let i = 0; i < 5; i++) {
+function getRandomInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+for (let i = 0; i < 25; i++) {
 
     let randomPhoto = Math.floor(Math.random() * photoAddress.length);
-
-    function getRandomInRange(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
 
     photo[i] =
         {
@@ -36,10 +38,23 @@ for (let i = 0; i < 5; i++) {
     photoAddress.splice(randomPhoto, 1);
 
     let photoElement = photoTemplate.cloneNode(true);
-    photoElement.querySelector('img').src = photo[i].url;
-    photoElement.querySelector('.picture-likes').textContent = photo[i].likes;
-    photoElement.querySelector('.picture-comments').textContent = "1";
-    photoTemplate.appendChild(photoElement);
+    photoElement.querySelector('.picture__img').src = photo[i].url;
+    photoElement.querySelector('.picture__stat--likes').textContent = photo[i].likes;
+    photoElement.querySelector('.picture__stat--comments').textContent = "1";
+    picturesContainer.appendChild(photoElement);
 };
 
-console.log(photo);
+let bigPicture = document.querySelector('.big-picture');
+
+bigPicture.classList.remove('hidden');
+
+bigPicture.querySelector('.big-picture__img img').src = photo[0].url;
+bigPicture.querySelector('.likes-count').textContent = photo[0].likes;
+bigPicture.querySelector('.comments-count').textContent = "1";
+bigPicture.querySelector('.social__picture').src = "img/avatar-" + getRandomInRange(1, 6) + ".svg";
+bigPicture.querySelector('.social__text').textContent = photo[0].comments;
+bigPicture.querySelector('.social__caption').textContent = photo[0].description;
+
+
+document.querySelector('.social__comment-count').classList.add('visually-hidden');
+document.querySelector('.social__loadmore').classList.add('visually-hidden');
