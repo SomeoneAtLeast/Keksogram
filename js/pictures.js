@@ -1,4 +1,4 @@
-'use strict'
+
 
 let picturesContainer = document.querySelector('.pictures');
 
@@ -46,7 +46,7 @@ for (let i = 0; i < 25; i++) {
 
 let bigPicture = document.querySelector('.big-picture');
 
-bigPicture.classList.remove('hidden');
+// bigPicture.classList.remove('hidden');
 
 bigPicture.querySelector('.big-picture__img img').src = photo[0].url;
 bigPicture.querySelector('.likes-count').textContent = photo[0].likes;
@@ -71,3 +71,23 @@ bigPicture.querySelector('.social__comment-number').textContent = numberOfCommen
 
 document.querySelector('.social__comment-count').classList.add('visually-hidden');
 document.querySelector('.social__loadmore').classList.add('visually-hidden');
+
+let imgUpload = document.querySelector('.img-upload__input');
+let imgUploadOverlay = document.querySelector('.img-upload__overlay');
+let imgUploadCancel = document.querySelector('.img-upload__cancel');
+
+let openUpload = function () {
+    imgUploadOverlay.classList.remove("hidden");
+};
+
+let closeUpload = function () {
+    imgUploadOverlay.classList.add("hidden");
+};
+
+imgUpload.addEventListener('change', function(evt) {
+    openUpload();
+});
+
+imgUploadCancel.addEventListener('click', function() {
+    closeUpload();
+});
