@@ -553,13 +553,13 @@ main {
   text-align: center;
   vertical-align: middle;
 
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   border: 0;
 }
 
 .resize__control:hover,
 .resize__control:focus {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .resize__control:active {
@@ -639,6 +639,17 @@ main {
   max-height: 600px;
 }
 
+.img-upload__preview--img_25 {
+  transform: scale(0.25);
+}
+
+.img-upload__preview--img_50 {
+  transform: scale(0.50);
+}
+
+.img-upload__preview--img_75 {
+  transform: scale(0.75);
+}
 
 /* Слайдер. Регулировка глубины фильтра */
 
