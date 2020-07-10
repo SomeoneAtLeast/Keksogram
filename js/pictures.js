@@ -310,8 +310,34 @@ heatEffect.addEventListener('click', function(evt) {
     applyAnEffectHeat();
 });
 
-// let tagField = document.querySelector('.text__hashtags');
-// let tagFieldValue = tagField.value;
-// let tagFieldValueArr = tagFieldValue.split();
+let imgUploadForm = document.querySelector(".img-upload__form");
+let tagField = document.querySelector('.text__hashtags');
 
-// console.log(tagFieldValueArr);
+// let dontSubmit = function () {
+//     evt.preventDefault();
+// };
+
+imgUploadForm.addEventListener('submit', function(evt){
+
+    let tagArr = tagField.value.split(" ");
+    let tagArrWithoutEmptiness = tagArr.filter(element => element !== "");
+    let wrongTag = false;
+
+    for (let i = 0; i <= tagArrWithoutEmptiness.length; i++) {
+
+        if (tagArrWithoutEmptiness[i].length > 20 || tagArrWithoutEmptiness[i].charAt(0) != "#"
+        || tagArrWithoutEmptiness[i] == "#" || tagArrWithoutEmptiness[i] === tagArr[i - 1] 
+        || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 2]
+        || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 3] 
+        || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 4] || i > 4) {
+            wrongTag = true;
+            break;
+        };
+    };
+
+    if (wrongTag) {
+        evt.preventDefault();
+    }
+});
+
+
