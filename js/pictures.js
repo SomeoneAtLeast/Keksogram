@@ -109,6 +109,7 @@ let openUpload = function () {
 
 let closeUpload = function () {
     imgUploadOverlay.classList.add('hidden');
+    tagField.setCustomValidity("");
 };
 
 imgUpload.addEventListener('change', function(evt) {
@@ -313,28 +314,46 @@ heatEffect.addEventListener('click', function(evt) {
 let imgUploadForm = document.querySelector(".img-upload__form");
 let tagField = document.querySelector('.text__hashtags');
 
-// let dontSubmit = function () {
-//     evt.preventDefault();
-// };
+let wrongTag = false;
 
-imgUploadForm.addEventListener('submit', function(evt){
-
+let validationForm = function () {
     let tagArr = tagField.value.split(" ");
     let tagArrWithoutEmptiness = tagArr.filter(element => element !== "");
-    let wrongTag = false;
 
     for (let i = 0; i <= tagArrWithoutEmptiness.length; i++) {
 
-        if (tagArrWithoutEmptiness[i].length > 20 || tagArrWithoutEmptiness[i].charAt(0) != "#"
-        || tagArrWithoutEmptiness[i] == "#" || tagArrWithoutEmptiness[i] === tagArr[i - 1] 
-        || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 2]
-        || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 3] 
-        || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 4] || i > 4) {
+        if (tagArrWithoutEmptiness[i].length > 20) {
             wrongTag = true;
+            tagField.setCustomValidity('Один из тегов слишком длинный');
             break;
+        } else if (tagArrWithoutEmptiness[i].charAt(0) != "#") {
+            wrongTag = true;
+            tagField.setCustomValidity('Первым символом должен быть "#"');
+            break;
+        } else if (tagArrWithoutEmptiness[i] == "#") {
+            wrongTag = true;
+            tagField.setCustomValidity('Одной решетки мало');
+            break;
+        } else if (tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 1] 
+            || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 2]
+            || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 3] 
+            || tagArrWithoutEmptiness[i] === tagArrWithoutEmptiness[i - 4] ) {
+            wrongTag = true;
+            tagField.setCustomValidity('Не должно быть одинаковых тегов');
+            break;
+        } else if (i > 4) {
+            wrongTag = true;
+            tagField.setCustomValidity('Тегов слишком много');
+            break;
+        } else {
+            tagField.setCustomValidity("");
         };
     };
+};
 
+imgUploadForm.addEventListener('change', function(evt){
+    validationForm();
+    
     if (wrongTag) {
         evt.preventDefault();
     }
