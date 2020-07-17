@@ -360,3 +360,58 @@ imgUploadForm.addEventListener('change', function(evt){
 });
 
 
+// Перетаскивание
+
+let scalePin = document.querySelector('.scale__pin');
+let scaleLevel = document.querySelector('.scale__level');
+
+scalePin.addEventListener("mousedown", function(evt) {
+    evt.preventDefault;
+
+    let startCoords = {
+        x: evt.clientX
+    };
+
+    let LimitMovementX = {
+        min: 0,
+        max: 450
+    };
+
+    let onMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+  
+        let shift = {
+          x: startCoords.x - moveEvt.clientX
+        };
+
+        startCoords = {
+            x: moveEvt.clientX
+        }
+
+        let scaleLevelNow = (scalePin.offsetLeft - shift.x) + 'px';
+
+        if ((scalePin.offsetLeft - shift.x) < 0) {
+            scalePin.style.left = LimitMovementX.min;
+            scaleLevel.style.width = LimitMovementX.min;
+        } else if ((scalePin.offsetLeft - shift.x) > 450) {
+            scalePin.style.left = LimitMovementX.max;
+            scaleLevel.style.width = LimitMovementX.max;
+        } else {
+            scalePin.style.left = (scalePin.offsetLeft - shift.x) + 'px';
+            scaleLevel.style.width = scaleLevelNow;
+        }
+      };
+
+
+
+
+
+    let onMouseUp = function (upEvt) {
+        upEvt.preventDefault();
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+});
