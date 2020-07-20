@@ -805,8 +805,8 @@ main {
 }
 
 .effects__preview--chrome {
-  -webkit-filter: grayscale(1);
-          filter: grayscale(1);
+  -webkit-filter: grayscale(0.2);
+          filter: grayscale(0.2);
 }
 
 .effects__preview--sepia {

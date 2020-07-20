@@ -365,6 +365,8 @@ imgUploadForm.addEventListener('change', function(evt){
 let scalePin = document.querySelector('.scale__pin');
 let scaleLevel = document.querySelector('.scale__level');
 
+
+
 scalePin.addEventListener("mousedown", function(evt) {
     evt.preventDefault;
 
@@ -400,11 +402,14 @@ scalePin.addEventListener("mousedown", function(evt) {
             scalePin.style.left = (scalePin.offsetLeft - shift.x) + 'px';
             scaleLevel.style.width = scaleLevelNow;
         }
+
+        let filterStrong = ((scalePin.offsetLeft - shift.x) / 45) / 10;
+
+        if (uploadPhoto.classList.contains("effects__preview--chrome")) {
+            uploadPhoto.style.WebkitFilter= "grayscale(" + filterStrong.toFixed(2) + ")";
+            console.log(filterStrong.toFixed(2));
+        };
       };
-
-
-
-
 
     let onMouseUp = function (upEvt) {
         upEvt.preventDefault();
@@ -414,4 +419,13 @@ scalePin.addEventListener("mousedown", function(evt) {
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+
 });
+
+// let noEffect = document.querySelector('.effects__preview--none');
+// let chromeEffect = document.querySelector('.effects__preview--chrome');
+// let sepiaEffect = document.querySelector('.effects__preview--sepia');
+// let marvinEffect = document.querySelector('.effects__preview--marvin');
+// let phobosEffect = document.querySelector('.effects__preview--phobos');
+// let heatEffect = document.querySelector('.effects__preview--heat');
+// 90 = 0.2 45 = 0.1 длина линии / значение линии 
