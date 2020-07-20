@@ -189,12 +189,92 @@ resizeControlPlus.addEventListener('click', function(evt) {
     }
 });
 
+// Перетаскивание
+
+let scalePin = document.querySelector('.scale__pin');
+let scaleLevel = document.querySelector('.scale__level');
+
+
+scalePin.addEventListener("mousedown", function(evt) {
+    evt.preventDefault;
+
+    let startCoords = {
+        x: evt.clientX
+    };
+
+    let LimitMovementX = {
+        min: 0,
+        max: 450
+    };
+
+    let onMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+  
+        let shift = {
+          x: startCoords.x - moveEvt.clientX
+        };
+
+        startCoords = {
+            x: moveEvt.clientX
+        }
+
+        let scaleLevelNow = (scalePin.offsetLeft - shift.x) + 'px';
+
+        if ((scalePin.offsetLeft - shift.x) < 0) {
+            scalePin.style.left = LimitMovementX.min;
+            scaleLevel.style.width = LimitMovementX.min;
+        } else if ((scalePin.offsetLeft - shift.x) > 450) {
+            scalePin.style.left = LimitMovementX.max;
+            scaleLevel.style.width = LimitMovementX.max;
+        } else {
+            scalePin.style.left = (scalePin.offsetLeft - shift.x) + 'px';
+            scaleLevel.style.width = scaleLevelNow;
+        }
+
+        // Тут меняется сила фильтра
+
+        let filterStrong = ((scalePin.offsetLeft - shift.x) / 45) / 10;
+
+        if (uploadPhoto.classList.contains("effects__preview--chrome")) {
+            uploadPhoto.style.WebkitFilter= "grayscale(" + filterStrong.toFixed(2) + ")";
+        };
+      };
+
+    let onMouseUp = function (upEvt) {
+        upEvt.preventDefault();
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+});
+
+// let noEffect = document.querySelector('.effects__preview--none');
+// let chromeEffect = document.querySelector('.effects__preview--chrome');
+// let sepiaEffect = document.querySelector('.effects__preview--sepia');
+// let marvinEffect = document.querySelector('.effects__preview--marvin');
+// let phobosEffect = document.querySelector('.effects__preview--phobos');
+// let heatEffect = document.querySelector('.effects__preview--heat');
+// 90 = 0.2 45 = 0.1 длина линии / значение линии 
+
+
+// Эффекты 
+
 let noEffect = document.querySelector('.effects__preview--none');
 let chromeEffect = document.querySelector('.effects__preview--chrome');
 let sepiaEffect = document.querySelector('.effects__preview--sepia');
 let marvinEffect = document.querySelector('.effects__preview--marvin');
 let phobosEffect = document.querySelector('.effects__preview--phobos');
 let heatEffect = document.querySelector('.effects__preview--heat');
+
+// Тут сбрасывается положение ползунка
+
+let scalePinStart = function () {
+    scalePin.style.left = '90px';
+    scaleLevel.style.width = "20%"
+};
 
 let removeEffects = function () {
 
@@ -208,6 +288,7 @@ let removeEffects = function () {
         uploadPhoto.classList.remove("effects__preview--heat")
     } else if (uploadPhoto.classList.contains("effects__preview--chrome")) {
         uploadPhoto.classList.remove("effects__preview--chrome")
+        uploadPhoto.style.WebkitFilter= "grayscale(0)";
     };
 }
 
@@ -225,12 +306,14 @@ let applyAnEffectChrom = function () {
     };
 
     uploadPhoto.classList.add('effects__preview--chrome');
+    uploadPhoto.style.WebkitFilter= "grayscale(0.2)";
 }
 
 let applyAnEffectSepia = function () {
 
     if (uploadPhoto.classList.contains("effects__preview--chrome")) {
         uploadPhoto.classList.remove("effects__preview--chrome")
+        uploadPhoto.style.WebkitFilter= "grayscale(0)";
     } else if (uploadPhoto.classList.contains("effects__preview--marvin")) {
         uploadPhoto.classList.remove("effects__preview--marvin")
     } else if (uploadPhoto.classList.contains("effects__preview--phobos")) {
@@ -246,6 +329,7 @@ let applyAnEffectMarvin = function () {
 
     if (uploadPhoto.classList.contains("effects__preview--chrome")) {
         uploadPhoto.classList.remove("effects__preview--chrome")
+        uploadPhoto.style.WebkitFilter= "grayscale(0)";
     } else if (uploadPhoto.classList.contains("effects__preview--sepia")) {
         uploadPhoto.classList.remove("effects__preview--marvin")
     } else if (uploadPhoto.classList.contains("effects__preview--phobos")) {
@@ -261,6 +345,7 @@ let applyAnEffectPhobos = function () {
 
     if (uploadPhoto.classList.contains("effects__preview--chrome")) {
         uploadPhoto.classList.remove("effects__preview--chrome")
+        uploadPhoto.style.WebkitFilter= "grayscale(0)";
     } else if (uploadPhoto.classList.contains("effects__preview--sepia")) {
         uploadPhoto.classList.remove("effects__preview--sepia")
     } else if (uploadPhoto.classList.contains("effects__preview--marvin")) {
@@ -276,6 +361,7 @@ let applyAnEffectHeat = function () {
 
     if (uploadPhoto.classList.contains("effects__preview--chrome")) {
         uploadPhoto.classList.remove("effects__preview--chrome")
+        uploadPhoto.style.WebkitFilter= "grayscale(0)";
     } else if (uploadPhoto.classList.contains("effects__preview--sepia")) {
         uploadPhoto.classList.remove("effects__preview--sepia")
     } else if (uploadPhoto.classList.contains("effects__preview--marvin")) {
@@ -289,26 +375,32 @@ let applyAnEffectHeat = function () {
 
 noEffect.addEventListener('click', function(evt) {
     removeEffects();
+    scalePinStart();
 });
 
 chromeEffect.addEventListener('click', function(evt) {
     applyAnEffectChrom();
+    scalePinStart();
 });
 
 sepiaEffect.addEventListener('click', function(evt) {
     applyAnEffectSepia();
+    scalePinStart();
 });
 
 marvinEffect.addEventListener('click', function(evt) {
     applyAnEffectMarvin();
+    scalePinStart();
 });
 
 phobosEffect.addEventListener('click', function(evt) {
     applyAnEffectPhobos();
+    scalePinStart();
 });
 
 heatEffect.addEventListener('click', function(evt) {
     applyAnEffectHeat();
+    scalePinStart();
 });
 
 let imgUploadForm = document.querySelector(".img-upload__form");
@@ -358,74 +450,3 @@ imgUploadForm.addEventListener('change', function(evt){
         evt.preventDefault();
     }
 });
-
-
-// Перетаскивание
-
-let scalePin = document.querySelector('.scale__pin');
-let scaleLevel = document.querySelector('.scale__level');
-
-
-
-scalePin.addEventListener("mousedown", function(evt) {
-    evt.preventDefault;
-
-    let startCoords = {
-        x: evt.clientX
-    };
-
-    let LimitMovementX = {
-        min: 0,
-        max: 450
-    };
-
-    let onMouseMove = function (moveEvt) {
-        moveEvt.preventDefault();
-  
-        let shift = {
-          x: startCoords.x - moveEvt.clientX
-        };
-
-        startCoords = {
-            x: moveEvt.clientX
-        }
-
-        let scaleLevelNow = (scalePin.offsetLeft - shift.x) + 'px';
-
-        if ((scalePin.offsetLeft - shift.x) < 0) {
-            scalePin.style.left = LimitMovementX.min;
-            scaleLevel.style.width = LimitMovementX.min;
-        } else if ((scalePin.offsetLeft - shift.x) > 450) {
-            scalePin.style.left = LimitMovementX.max;
-            scaleLevel.style.width = LimitMovementX.max;
-        } else {
-            scalePin.style.left = (scalePin.offsetLeft - shift.x) + 'px';
-            scaleLevel.style.width = scaleLevelNow;
-        }
-
-        let filterStrong = ((scalePin.offsetLeft - shift.x) / 45) / 10;
-
-        if (uploadPhoto.classList.contains("effects__preview--chrome")) {
-            uploadPhoto.style.WebkitFilter= "grayscale(" + filterStrong.toFixed(2) + ")";
-            console.log(filterStrong.toFixed(2));
-        };
-      };
-
-    let onMouseUp = function (upEvt) {
-        upEvt.preventDefault();
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-
-});
-
-// let noEffect = document.querySelector('.effects__preview--none');
-// let chromeEffect = document.querySelector('.effects__preview--chrome');
-// let sepiaEffect = document.querySelector('.effects__preview--sepia');
-// let marvinEffect = document.querySelector('.effects__preview--marvin');
-// let phobosEffect = document.querySelector('.effects__preview--phobos');
-// let heatEffect = document.querySelector('.effects__preview--heat');
-// 90 = 0.2 45 = 0.1 длина линии / значение линии 
