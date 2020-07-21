@@ -704,7 +704,7 @@ main {
 .scale__pin {
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 90px;
 
   width: 18px;
   height: 18px;
@@ -805,8 +805,8 @@ main {
 }
 
 .effects__preview--chrome {
-  -webkit-filter: grayscale(0.2);
-          filter: grayscale(0.2);
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
 }
 
 .effects__preview--sepia {
