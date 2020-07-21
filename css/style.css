@@ -637,6 +637,11 @@ main {
   display: block;
   max-width: 600px;
   max-height: 600px;
+  -khtml-user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .img-upload__preview--img_25 {
@@ -699,7 +704,7 @@ main {
 .scale__pin {
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 90px;
 
   width: 18px;
   height: 18px;
@@ -712,7 +717,7 @@ main {
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
 
-  cursor: move;
+  cursor: pointer;
 }
 
 .scale__level {
