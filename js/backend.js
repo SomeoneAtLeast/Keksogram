@@ -2,7 +2,7 @@
 
 (function () {
 
-    const URL = 'http://js.dump.academy/kekstagram';
+    const URL = 'https://js.dump.academy/kekstagram';
 
     window.upload = function (data, onSuccess) {
         let xhr = new XMLHttpRequest;
