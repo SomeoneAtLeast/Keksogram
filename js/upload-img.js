@@ -376,10 +376,19 @@
         }
     });
 
+    let CommentText = document.querySelector(".text__description");
+
+    let OnClearFormFields = function () {
+        tagField.value = "";
+        CommentText.value = "";
+    }
+
     imgUploadForm.addEventListener('submit', function (evt) {
         window.upload(new FormData(imgUploadForm), function (response) {
             imgUploadOverlay.classList.add('hidden');
+            OnClearFormFields();
         });
         evt.preventDefault();
+
     })
 })();
