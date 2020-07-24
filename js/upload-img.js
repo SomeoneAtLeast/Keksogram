@@ -328,7 +328,7 @@
         scalePinStart();
     });
 
-    let imgUploadForm = document.querySelector(".img-upload__form");
+    window.imgUploadForm = document.querySelector(".img-upload__form");
     let tagField = document.querySelector('.text__hashtags');
 
     let wrongTag = false;
@@ -375,4 +375,11 @@
             evt.preventDefault();
         }
     });
+
+    imgUploadForm.addEventListener('submit', function (evt) {
+        window.upload(new FormData(imgUploadForm), function (response) {
+            imgUploadOverlay.classList.add('hidden');
+        });
+        evt.preventDefault();
+    })
 })();
